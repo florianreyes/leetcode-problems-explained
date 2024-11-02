@@ -26,7 +26,6 @@ ostream &operator<<(ostream &out, vector<x> v)
     out << "]";
     return out;
 }
-
 int main()
 {
 
@@ -44,23 +43,31 @@ int main()
         segs.pb(mp(d + 1, -1));
     }
 
+    // Sorteo segmetos a medida que empiezan para ir sumando al coverage
     sort(segs.begin(), segs.end());
 
+    // Arranco cubriendo cero puntos
     int cubre = 0;
+    // Empiezo en el primer inicio de segmento
     int ultima = segs[0].first;
     vector<int> res(n + 1, 0);
 
     forn(i, n)
     {
+        // me fijo el siguiente evento, ya sea inicio o fin
         ll pos = segs[i].first;
         ll valor = segs[i].second;
 
+        // Si avance posiciones veo cuantos puntos abarco bao este nivel de coverage
         if (pos != ultima)
         {
             ll puntos = pos - ultima;
+            // Con este nivel de coverage veo cuantos puntos abarco
             res[cubre] += puntos;
         }
+        // Actualizo la posicion a la ultima vista
         ultima = pos;
     }
+    // Le resto(o sumo) al coverage en base a si termine un intervalo o arranque otro nuevo.
     cubre += valor;
 }
